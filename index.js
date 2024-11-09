@@ -27,7 +27,7 @@ async function generateContent() {
         role: "user",
         content:
           "Use lowercase. Take a very highly specialized topic that you can never take twice if it was a random that will represent a valuable information" +
-          " in the interests of software workers, not businesses and create a thread about it. No hashtags please. It should be useful and viral for those who care about their own well-being, not the well-being of the companies and businesses they work for.",
+          " in the interests of software workers, not businesses and create a thread about it. No hashtags please. 16 posts in one thread maximum but 8-11 is perfect. It should be useful and viral for those who care about their own well-being, not the well-being of the companies and businesses they work for.",
       },
     ],
   });
@@ -35,7 +35,10 @@ async function generateContent() {
   return JSON.parse(response.choices[0].message.content.trim());
 }
 
-// Function to Post Thread on Twitter
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function postThread(threadObject) {
   console.log("--- 50% --- Posting Thread...");
   const { thread } = threadObject; // Destructure the thread array from the object
@@ -52,6 +55,9 @@ async function postThread(threadObject) {
     const tweetResponse = await twitterClient.v2.tweet(tweetData);
     console.log(tweetResponse);
     lastTweetId = tweetResponse.data.id; // Update lastTweetId to maintain thread sequence
+
+    // Wait 20 seconds before posting the next tweet
+    await delay(20000);
   }
 }
 
