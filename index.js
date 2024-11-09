@@ -64,3 +64,5 @@ const main = async () => {
     console.error("--- Error:", error);
   }
 };
+
+main();
